@@ -50,8 +50,8 @@ env =
     else
       raise "Sorry, #{Omnibus.config.solaris_compiler} is not a valid compiler selection."
     end
-    when "smartos"
-      {   
+    when "smartos", "freebsd"
+      {
        "CFLAGS"  => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
        "LDFLAGS" => "-L#{install_dir}/embedded/lib"
       }
@@ -67,7 +67,8 @@ build do
   # GCC 4.7.0 chokes on mismatched function types between OpenSSL 1.0.1c and Ruby 1.9.3-p286
   patch :source => "ruby-openssl-1.0.1c.patch", :plevel => 1
 
-  if platform == "smartos"
+  case platform
+  when "smartos", "freebsd"
     # Patches taken from RVM.
     # http://bugs.ruby-lang.org/issues/5384
     # https://www.illumos.org/issues/1587

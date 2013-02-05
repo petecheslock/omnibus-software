@@ -5,9 +5,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,8 @@ if platform == "solaris2"
   env.merge!({"CXX" => "/opt/csw/gcc3/bin/g++"})
 end
 
-if platform == "smartos"
+case platform
+when "smartos", "freebsd"
   env.merge!({"LDFLAGS" => "-R#{install_dir}/embedded/lib -L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include -static-libgcc"})
   env.merge!({"LD_OPTIONS" => "-R#{install_dir}/embedded/lib"})
 end
@@ -54,7 +55,8 @@ end
 ########################################################################
 
 build do
-  if platform == "smartos"
+  case platform
+  when "smartos", "freebsd"
     # SmartOS is Illumos Kernel, plus NetBSD userland with a GNU toolchain.
     # These patches are taken from NetBSD pkgsrc.
     # http://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/devel/ncurses/patches/
